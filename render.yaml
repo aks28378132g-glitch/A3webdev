@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: lovely-notes-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /home
+    envVars:
+      - key: mongourl
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false

@@ -1,5 +1,6 @@
 
 const express = require("express");
+const cors = require("cors");
 
 const { connection } = require("./db");
 const { userRouter } = require("./routes/user.route");
@@ -8,6 +9,22 @@ const { auth } = require("./midddlewere/auth.middlewere");
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5174",
+  "http://127.0.0.1:5174",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Origin is not allowed by CORS"));
+    },
+  })
+);
 app.use(express.json());
 
 app.use("/user", userRouter);
